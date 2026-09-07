@@ -161,7 +161,7 @@
             background: #f0faf4;
         }
         
-        /* Основной зеленый бейдж (сверху справа) */
+        /* Зеленый бейдж (верхний правый угол) */
         .stage-circle .count-badge {
             position: absolute;
             top: -8px;
@@ -180,12 +180,12 @@
             z-index: 3;
         }
 
-        /* ИЗМЕНЕНИЕ: Красный бейдж тревоги (снизу справа) */
+        /* ИЗМЕНЕНИЕ: Красный бейдж (нижний правый угол, симметрично зеленому) */
         .stage-circle .alert-badge {
             position: absolute;
-            top: auto;       /* Сброс верхнего позиционирования */
-            bottom: -22px;   /* Смещение вниз под кружок */
-            right: -18px;    /* Смещение вправо */
+            top: auto;       /* Сброс верхнего отступа */
+            bottom: -8px;    /* Зеркально к top: -8px */
+            right: -8px;     /* Зеркально к right: -8px */
             background: #ef4444;
             color: white;
             font-size: 11px;
@@ -219,8 +219,6 @@
             display: flex;
             align-items: flex-start;
             justify-content: center;
-            /* Добавляем отступ снизу, чтобы красный бейдж не наезжал на текст, если он появится */
-            padding-bottom: 20px; 
         }
 
         /* --- ВЫПАДАЮЩИЙ СПИСОК --- */
@@ -253,7 +251,6 @@
         }
         .stage-dropdown .dropdown-close:hover { color: #1d4ed8; }
         
-        /* ИЗМЕНЕНИЕ: Упрощенный стиль строки списка */
         .stage-dropdown .deal-item {
             padding: 8px 0;
             border-bottom: 1px solid #f0f4fe;
@@ -270,7 +267,6 @@
             text-align: center;
         }
 
-        /* ИЗМЕНЕНИЕ: Название теперь ссылка и занимает всё место */
         .stage-dropdown .deal-title-link {
             flex: 1;
             color: #1e2f4a;
@@ -448,7 +444,6 @@
                 stageElements[stageId].closeBtn.addEventListener('click', (e) => { e.stopPropagation(); closeDropdown(); });
                 
                 dropdown.addEventListener('click', (e) => {
-                    // Разрешаем клик по ссылкам внутри дропдауна
                     if (e.target.closest('a')) return;
                     e.stopPropagation();
                 });
@@ -495,12 +490,10 @@
             deals.forEach((deal, index) => {
                 const url = `https://b24-964ige.bitrix24.ru/crm/deal/show/${deal.ID}/`;
                 
-                // Иконка тревоги только для проблемных
                 const alertIcon = deal._isAlert 
                     ? `<i class="fas fa-exclamation-circle deal-alert-icon"></i>` 
-                    : `<span style="width:16px;display:inline-block"></span>`; // Пустое место для выравнивания
+                    : `<span style="width:16px;display:inline-block"></span>`;
                 
-                // ИЗМЕНЕНИЕ: Вся строка названия теперь ссылка
                 html += `
                     <div class="deal-item">
                         ${alertIcon}
@@ -511,14 +504,11 @@
             el.content.innerHTML = html;
         }
 
-        // Проверка условия для красного бейджа
         function checkAlertCondition(deal, stageId) {
-            // 1. Стадия "Решение о ремонте": Begindate + 3 дня
             if (stageId === 'C12:UC_L90PZM') {
                 if (!deal.BEGINDATE) return false;
                 const beginDate = new Date(deal.BEGINDATE);
                 const now = new Date();
-                // Корректировка на часовой пояс Moscow (+3 часа от UTC)
                 const moscowOffset = 3 * 60 * 60 * 1000; 
                 const nowMoscow = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + moscowOffset);
                 
@@ -526,7 +516,6 @@
                 return nowMoscow > deadline;
             }
             
-            // 2. Стадия "Диагностика, ремонт": UF_CRM_1785307987 > 9
             if (stageId === 'C12:PREPAYMENT_INVOICE') {
                 const ufValue = parseInt(deal.UF_CRM_1785307987, 10);
                 return !isNaN(ufValue) && ufValue > 9;
@@ -548,7 +537,6 @@
                 if (el) {
                     el.badge.textContent = count;
                     
-                    // Обновление красного бейджа
                     if (el.alertBadge) {
                         const alerts = (dealsMap[stageId] || []).filter(d => d._isAlert).length;
                         alertCounts[stageId] = alerts;
@@ -602,7 +590,6 @@
                         let title = deal.TITLE || deal.NAME || '';
                         if (!title) title = `Сделка №${deal.ID}`;
                         
-                        // Проверяем условие тревоги
                         const isAlert = checkAlertCondition(deal, stageId);
                         
                         dealsMap[stageId].push({
