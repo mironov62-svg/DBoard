@@ -180,12 +180,12 @@
             z-index: 3;
         }
 
-        /* ИЗМЕНЕНИЕ: Красный бейдж (нижний правый угол, симметрично зеленому) */
+        /* Красный бейдж (нижний правый угол, симметрично зеленому) */
         .stage-circle .alert-badge {
             position: absolute;
-            top: auto;       /* Сброс верхнего отступа */
-            bottom: -8px;    /* Зеркально к top: -8px */
-            right: -8px;     /* Зеркально к right: -8px */
+            top: auto;
+            bottom: -8px;
+            right: -8px;
             background: #ef4444;
             color: white;
             font-size: 11px;
@@ -267,6 +267,7 @@
             text-align: center;
         }
 
+        /* Ссылка-название сделки */
         .stage-dropdown .deal-title-link {
             flex: 1;
             color: #1e2f4a;
@@ -275,10 +276,21 @@
             text-decoration: none;
             display: block;
             transition: color 0.2s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .stage-dropdown .deal-title-link:hover {
             color: #1d4ed8;
             text-decoration: underline;
+        }
+        
+        /* Дополнительное поле UF */
+        .stage-dropdown .deal-uf-field {
+            color: #5a6d86;
+            font-size: 13px;
+            margin-left: 6px;
+            font-weight: 400;
         }
 
         .stage-dropdown .empty-message { color: #7a8aa0; font-size: 13px; text-align: center; padding: 15px 0; }
@@ -319,6 +331,7 @@
             .stage-wrapper { width: 60px; }
             .stage-dropdown { min-width: 260px; max-width: 92vw; padding: 10px 12px; }
             .stage-dropdown .dropdown-header h3 { font-size: 14px; }
+            .stage-dropdown .deal-title-link { white-space: normal; }
         }
     </style>
 </head>
@@ -494,10 +507,16 @@
                     ? `<i class="fas fa-exclamation-circle deal-alert-icon"></i>` 
                     : `<span style="width:16px;display:inline-block"></span>`;
                 
+                // Формируем текст с UF-полем
+                let titleText = deal.TITLE;
+                if (deal.UF_EXTRA && String(deal.UF_EXTRA).trim() !== '') {
+                    titleText += ` <span class="deal-uf-field">(${deal.UF_EXTRA})</span>`;
+                }
+                
                 html += `
                     <div class="deal-item">
                         ${alertIcon}
-                        <a href="${url}" target="_blank" class="deal-title-link">${deal.TITLE}</a>
+                        <a href="${url}" target="_blank" class="deal-title-link">${titleText}</a>
                     </div>
                 `;
             });
@@ -592,12 +611,14 @@
                         
                         const isAlert = checkAlertCondition(deal, stageId);
                         
+                        // ИЗМЕНЕНИЕ: Сохраняем значение UF_CRM_1595995680751
                         dealsMap[stageId].push({
                             ID: deal.ID,
                             TITLE: title,
                             STAGE_ID: stageId,
                             BEGINDATE: deal.BEGINDATE,
                             UF_CRM_1785307987: deal.UF_CRM_1785307987,
+                            UF_EXTRA: deal.UF_CRM_1595995680751, // Новое поле
                             _isAlert: isAlert
                         });
                     }
