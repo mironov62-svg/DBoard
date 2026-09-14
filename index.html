@@ -22,7 +22,7 @@
             padding: 0;
             overflow-y: auto;
         }
-        
+
         .card {
             max-width: 1400px;
             width: 100%;
@@ -72,7 +72,7 @@
         }
         .bitrix-link i { font-size: 12px; }
         .bitrix-link:hover { background: #e2eaff; color: #0f3bb3; }
-        
+
         .btn-request {
             background: #1d4ed8;
             border: none;
@@ -94,11 +94,43 @@
         .btn-request:disabled { opacity: 0.6; pointer-events: none; }
 
         /* --- ГРАФИЧЕСКАЯ ЧАСТЬ --- */
+        .flow-block {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            width: 100%;
+        }
+
+        /* Надпись "Красные счётчики" */
+        .alert-legend-btn {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            padding: 8px 14px;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 20px;
+            color: #b91c1c;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.15s;
+            white-space: nowrap;
+            user-select: none;
+        }
+        .alert-legend-btn i { font-size: 13px; }
+        .alert-legend-btn:hover { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
+        .alert-legend-btn:active { transform: scale(0.97); }
+
         .flow-container {
             margin: 0;
             overflow-x: auto;
             overflow-y: visible;
             padding: 8px 0 10px;
+            flex: 1;
+            min-width: 0;
         }
         .flow-row {
             display: flex;
@@ -160,7 +192,7 @@
             border-color: #22c55e;
             background: #f0faf4;
         }
-        
+
         /* Зеленый бейдж (верхний правый угол) */
         .stage-circle .count-badge {
             position: absolute;
@@ -250,7 +282,7 @@
             background: none; border: none; font-size: 20px; color: #7a8aa0; cursor: pointer; padding: 0 5px;
         }
         .stage-dropdown .dropdown-close:hover { color: #1d4ed8; }
-        
+
         .stage-dropdown .deal-item {
             padding: 8px 0;
             border-bottom: 1px solid #f0f4fe;
@@ -259,7 +291,7 @@
             gap: 10px;
         }
         .stage-dropdown .deal-item:last-child { border-bottom: none; padding-bottom: 0; }
-        
+
         .stage-dropdown .deal-alert-icon {
             color: #ef4444;
             font-size: 14px;
@@ -284,7 +316,7 @@
             color: #1d4ed8;
             text-decoration: underline;
         }
-        
+
         /* Дополнительное поле UF */
         .stage-dropdown .deal-uf-field {
             color: #5a6d86;
@@ -294,12 +326,85 @@
         }
 
         .stage-dropdown .empty-message { color: #7a8aa0; font-size: 13px; text-align: center; padding: 15px 0; }
-        
+
         .dropdown-overlay {
             display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.3); z-index: 999;
         }
         .dropdown-overlay.active { display: block; }
+
+        /* --- МОДАЛКА "КРАСНЫЕ СЧЁТЧИКИ" --- */
+        .alert-info-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            padding: 22px 26px;
+            min-width: 380px;
+            max-width: 560px;
+            width: 90vw;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1100;
+        }
+        .alert-info-modal.open { display: block; }
+        .alert-info-modal h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 17px;
+            color: #0b1e3a;
+            margin: 0 0 14px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ef4444;
+        }
+        .alert-info-modal h3 i { color: #ef4444; }
+        .alert-info-modal .alert-info-close {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #7a8aa0;
+            cursor: pointer;
+            padding: 0 4px;
+            line-height: 1;
+        }
+        .alert-info-modal .alert-info-close:hover { color: #ef4444; }
+        .alert-info-modal .info-row {
+            display: flex;
+            gap: 12px;
+            padding: 11px 0;
+            border-bottom: 1px solid #f0f4fe;
+            font-size: 13.5px;
+            line-height: 1.45;
+        }
+        .alert-info-modal .info-row:last-child { border-bottom: none; padding-bottom: 0; }
+        .alert-info-modal .info-row .info-stage {
+            flex-shrink: 0;
+            width: 160px;
+            font-weight: 600;
+            color: #0b1e3a;
+        }
+        .alert-info-modal .info-row .info-desc {
+            color: #3a4a60;
+        }
+        .alert-info-modal .info-row .info-days {
+            display: inline-block;
+            background: #fef2f2;
+            color: #b91c1c;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 1px 8px;
+            border-radius: 12px;
+            margin-left: 4px;
+            border: 1px solid #fecaca;
+        }
 
         .footer-note {
             margin-top: 12px; border-top: 1px solid #e6edf5; padding-top: 10px;
@@ -322,8 +427,11 @@
             .stage-wrapper:not(:last-child)::after { width: 25px; left: 70px; }
             .card { padding: 12px 15px; }
             .stage-dropdown { min-width: 300px; max-width: 90vw; }
+            .alert-legend-btn { font-size: 11px; padding: 6px 10px; margin-top: 16px; }
         }
         @media (max-width: 600px) {
+            .flow-block { flex-direction: column; gap: 6px; }
+            .alert-legend-btn { margin-top: 0; align-self: flex-start; }
             .flow-row { gap: 15px; flex-wrap: nowrap; }
             .stage-wrapper:not(:last-child)::after { width: 15px; left: 60px; top: 30px; }
             .stage-circle { width: 60px; height: 60px; font-size: 18px; box-shadow: 0 0 0 5px white; }
@@ -332,12 +440,37 @@
             .stage-dropdown { min-width: 260px; max-width: 92vw; padding: 10px 12px; }
             .stage-dropdown .dropdown-header h3 { font-size: 14px; }
             .stage-dropdown .deal-title-link { white-space: normal; }
+            .alert-info-modal { min-width: 0; padding: 18px 16px; }
+            .alert-info-modal .info-row { flex-direction: column; gap: 4px; }
+            .alert-info-modal .info-row .info-stage { width: auto; }
         }
     </style>
 </head>
 <body>
 
 <div class="dropdown-overlay" id="dropdownOverlay"></div>
+
+<!-- Модалка "Красные счётчики" -->
+<div class="alert-info-modal" id="alertInfoModal">
+    <button class="alert-info-close" id="alertInfoClose">&times;</button>
+    <h3><i class="fas fa-exclamation-triangle"></i> Пояснения по красным счётчикам</h3>
+    <div class="info-row">
+        <div class="info-stage">Решение о ремонте</div>
+        <div class="info-desc">Более <span class="info-days">3 дней</span> с даты получения МИ.</div>
+    </div>
+    <div class="info-row">
+        <div class="info-stage">Диагностика, ремонт</div>
+        <div class="info-desc">Более <span class="info-days">9 дней</span> с даты прихода на стадию.</div>
+    </div>
+    <div class="info-row">
+        <div class="info-stage">Заказаны ЗЧ</div>
+        <div class="info-desc">Более <span class="info-days">30 дней</span> с даты получения МИ.</div>
+    </div>
+    <div class="info-row">
+        <div class="info-stage">На выдачу</div>
+        <div class="info-desc">Более <span class="info-days">15 дней</span> с даты прихода на стадию.</div>
+    </div>
+</div>
 
 <div class="card">
     <div class="toolbar">
@@ -355,8 +488,13 @@
         </div>
     </div>
 
-    <div class="flow-container" id="flowContainer">
-        <div class="flow-row" id="flowRow"></div>
+    <div class="flow-block">
+        <button class="alert-legend-btn" id="alertLegendBtn">
+            <i class="fas fa-exclamation-triangle"></i> Красные счётчики
+        </button>
+        <div class="flow-container" id="flowContainer">
+            <div class="flow-row" id="flowRow"></div>
+        </div>
     </div>
 
     <div class="footer-note">
@@ -388,12 +526,14 @@
 
         // Стадии, где нужен красный бейдж
         const ALERT_STAGES = {
-            'C12:UC_L90PZM': true,   // Решение о ремонте
-            'C12:PREPAYMENT_INVOICE': true // Диагностика, ремонт
+            'C12:UC_L90PZM': true,          // Решение о ремонте
+            'C12:PREPAYMENT_INVOICE': true, // Диагностика, ремонт
+            'C12:UC_9ESR0K': true,          // Заказаны 3Ч
+            'C12:UC_3M5ZEE': true           // На выдачу
         };
 
         let dealsData = {};
-        let alertCounts = {}; 
+        let alertCounts = {};
         let openDropdown = null;
         let stageElements = {};
 
@@ -401,6 +541,9 @@
         const statusMsg = document.getElementById('statusMessage');
         const fetchBtn = document.getElementById('fetchBtn');
         const overlay = document.getElementById('dropdownOverlay');
+        const alertLegendBtn = document.getElementById('alertLegendBtn');
+        const alertInfoModal = document.getElementById('alertInfoModal');
+        const alertInfoClose = document.getElementById('alertInfoClose');
 
         function createStageElements() {
             flowRow.innerHTML = '';
@@ -414,13 +557,13 @@
                 const circle = document.createElement('div');
                 circle.className = 'stage-circle';
                 circle.id = `circle-${index}`;
-                
+
                 let badgeHtml = `<span class="count-badge" id="badge-${index}">0</span>`;
-                
+
                 if (ALERT_STAGES[stageId]) {
                     badgeHtml += `<span class="alert-badge" id="alert-${index}" style="display:none">0</span>`;
                 }
-                
+
                 circle.innerHTML = `<span>${index + 1}</span>${badgeHtml}`;
 
                 const label = document.createElement('div');
@@ -455,7 +598,7 @@
 
                 circle.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(stageId); });
                 stageElements[stageId].closeBtn.addEventListener('click', (e) => { e.stopPropagation(); closeDropdown(); });
-                
+
                 dropdown.addEventListener('click', (e) => {
                     if (e.target.closest('a')) return;
                     e.stopPropagation();
@@ -470,7 +613,7 @@
             const el = stageElements[stageId];
             if (!el) return;
             if (openDropdown === stageId) { closeDropdown(); return; }
-            
+
             closeDropdown();
             el.dropdown.classList.add('open');
             el.circle.classList.add('active');
@@ -493,7 +636,7 @@
             const el = stageElements[stageId];
             if (!el) return;
             const deals = dealsData[stageId] || [];
-            
+
             if (deals.length === 0) {
                 el.content.innerHTML = `<div class="empty-message">Нет сделок</div>`;
                 return;
@@ -502,17 +645,17 @@
             let html = '';
             deals.forEach((deal, index) => {
                 const url = `https://b24-964ige.bitrix24.ru/crm/deal/show/${deal.ID}/`;
-                
-                const alertIcon = deal._isAlert 
-                    ? `<i class="fas fa-exclamation-circle deal-alert-icon"></i>` 
+
+                const alertIcon = deal._isAlert
+                    ? `<i class="fas fa-exclamation-circle deal-alert-icon"></i>`
                     : `<span style="width:16px;display:inline-block"></span>`;
-                
+
                 // Формируем текст с UF-полем
                 let titleText = deal.TITLE;
                 if (deal.UF_EXTRA && String(deal.UF_EXTRA).trim() !== '') {
                     titleText += ` <span class="deal-uf-field">(${deal.UF_EXTRA})</span>`;
                 }
-                
+
                 html += `
                     <div class="deal-item">
                         ${alertIcon}
@@ -523,23 +666,48 @@
             el.content.innerHTML = html;
         }
 
+        // Проверка "просрочки" для конкретной сделки на конкретной стадии
         function checkAlertCondition(deal, stageId) {
-            if (stageId === 'C12:UC_L90PZM') {
-                if (!deal.BEGINDATE) return false;
-                const beginDate = new Date(deal.BEGINDATE);
-                const now = new Date();
-                const moscowOffset = 3 * 60 * 60 * 1000; 
-                const nowMoscow = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + moscowOffset);
-                
-                const deadline = new Date(beginDate.getTime() + (3 * 24 * 60 * 60 * 1000));
-                return nowMoscow > deadline;
+            // Текущее время в Москве (UTC+3)
+            const now = new Date();
+            const moscowOffset = 3 * 60 * 60 * 1000;
+            const nowMoscow = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + moscowOffset);
+
+            function daysSince(dateStr) {
+                if (!dateStr) return null;
+                const d = new Date(dateStr);
+                if (isNaN(d.getTime())) return null;
+                // Приводим дату к МСК
+                const dMoscow = new Date(d.getTime() + (d.getTimezoneOffset() * 60000) + moscowOffset);
+                return (nowMoscow - dMoscow) / (1000 * 60 * 60 * 24);
             }
-            
+
+            // 1. Решение о ремонте — более 3 дней с BEGINDATE (дата получения МИ)
+            if (stageId === 'C12:UC_L90PZM') {
+                const days = daysSince(deal.BEGINDATE);
+                return days !== null && days > 3;
+            }
+
+            // 2. Диагностика, ремонт — более 9 дней с даты прихода на стадию
+            // Примечание: используется UF_CRM_1785307987 как дата прихода на стадию
+            // (в исходном коде оно использовалось как счётчик дней)
             if (stageId === 'C12:PREPAYMENT_INVOICE') {
                 const ufValue = parseInt(deal.UF_CRM_1785307987, 10);
                 return !isNaN(ufValue) && ufValue > 9;
             }
-            
+
+            // 3. Заказаны 3Ч — более 30 дней с BEGINDATE (дата получения МИ)
+            if (stageId === 'C12:UC_9ESR0K') {
+                const days = daysSince(deal.BEGINDATE);
+                return days !== null && days > 30;
+            }
+
+            // 4. На выдачу — более 15 дней с UF_CRM_1755597807 (дата фиксации 1)
+            if (stageId === 'C12:UC_3M5ZEE') {
+                const days = daysSince(deal.UF_CRM_1755597807);
+                return days !== null && days > 15;
+            }
+
             return false;
         }
 
@@ -552,14 +720,14 @@
                 const count = countsMap[stageId] || 0;
                 totalDeals += count;
                 const el = stageElements[stageId];
-                
+
                 if (el) {
                     el.badge.textContent = count;
-                    
+
                     if (el.alertBadge) {
                         const alerts = (dealsMap[stageId] || []).filter(d => d._isAlert).length;
                         alertCounts[stageId] = alerts;
-                        
+
                         if (alerts > 0) {
                             el.alertBadge.style.display = 'block';
                             el.alertBadge.textContent = alerts;
@@ -568,7 +736,7 @@
                         }
                     }
                 }
-                
+
                 if (openDropdown === stageId) renderDropdownContent(stageId);
             });
 
@@ -601,24 +769,24 @@
                     const dealId = deal.ID;
                     if (uniqueDeals.has(dealId)) return;
                     const stageId = deal.STAGE_ID;
-                    
+
                     if (stageId && STAGE_MAP.hasOwnProperty(stageId)) {
                         uniqueDeals.set(dealId, stageId);
                         counts[stageId] = (counts[stageId] || 0) + 1;
-                        
+
                         let title = deal.TITLE || deal.NAME || '';
                         if (!title) title = `Сделка №${deal.ID}`;
-                        
+
                         const isAlert = checkAlertCondition(deal, stageId);
-                        
-                        // ИЗМЕНЕНИЕ: Сохраняем значение UF_CRM_1595995680751
+
                         dealsMap[stageId].push({
                             ID: deal.ID,
                             TITLE: title,
                             STAGE_ID: stageId,
                             BEGINDATE: deal.BEGINDATE,
                             UF_CRM_1785307987: deal.UF_CRM_1785307987,
-                            UF_EXTRA: deal.UF_CRM_1595995680751, // Новое поле
+                            UF_CRM_1755597807: deal.UF_CRM_1755597807, // дата фиксации 1
+                            UF_EXTRA: deal.UF_CRM_1595995680751,
                             _isAlert: isAlert
                         });
                     }
@@ -643,7 +811,7 @@
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
                 const { counts, dealsMap } = parseWebhookResponse(data);
-                
+
                 const total = Object.values(counts).reduce((a, b) => a + b, 0);
                 if (total === 0) {
                     statusMsg.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#b91c1c;"></i> Пусто`;
@@ -662,11 +830,40 @@
             }
         }
 
+        // --- Модалка "Красные счётчики" ---
+        function openAlertInfoModal() {
+            alertInfoModal.classList.add('open');
+            overlay.classList.add('active');
+            document.body.classList.add('modal-open');
+        }
+        function closeAlertInfoModal() {
+            alertInfoModal.classList.remove('open');
+            // Если не открыт ни один dropdown — убираем overlay
+            if (!openDropdown) {
+                overlay.classList.remove('active');
+                document.body.classList.remove('modal-open');
+            }
+        }
+
+        alertLegendBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openAlertInfoModal();
+        });
+        alertInfoClose.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeAlertInfoModal();
+        });
+        // клик по оверлею закрывает и модалку, и dropdown
+        overlay.addEventListener('click', () => {
+            closeDropdown();
+            closeAlertInfoModal();
+        });
+
         fetchBtn.addEventListener('click', fetchRepairData);
         createStageElements();
 
         window.addEventListener('load', () => {
-            STAGE_ORDER.forEach(id => { 
+            STAGE_ORDER.forEach(id => {
                 stageElements[id].badge.textContent = '0';
                 if(stageElements[id].alertBadge) stageElements[id].alertBadge.style.display = 'none';
             });
